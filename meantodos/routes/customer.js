@@ -10,7 +10,7 @@ var webRequest = require('request');
 var email = require("emailjs");
 var server 	= email.server.connect({
    user:    "AliTaxi.no.reply@gmail.com", 
-   password: "weboth951", 
+   password: "", 
    host:    "smtp.gmail.com", 
    ssl:     true
 });
@@ -43,7 +43,7 @@ server.send({
 // For local SQL SERVER DB
 var dbConfig = {
     user: 'alishan92',
-    password: 'allah1992',
+    password: '',
     server: 'HP-DV7\\SQLEXPRESS',
     database: 'TestDb',
     port: 1433
@@ -52,7 +52,7 @@ var dbConfig = {
 // // For Azure Cloud SQL SERVER DB
 // var dbConfig = {
 //     user: 'alishan92',
-//     password: 'Allah1992!',
+//     password: '',
 //     server: 'alitaxi.database.windows.net',
 //     database: 'AliTaxiDB',
 //     port: 1433,
