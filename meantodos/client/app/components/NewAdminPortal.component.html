@@ -1,0 +1,450 @@
+<div *ngIf="initialized" style="margin-top: 100px;">
+
+    <div class="noRequests" *ngIf="customer.length == 0">
+            <h1>No Requests Available :(</h1>
+    </div>
+
+
+
+<div *ngIf="UpdateFees == false">
+
+<div class="container" style="margin-top: 100px; width: fit-content; height: 100%;">
+	<div class="row">
+    <h2 class="text-center" style="color:black; font-weight: bolder;">Welcome To Admin Portal</h2>
+    <h4 class="text-center" style="color:black; font-weight: bolder;">Please review your customer requests</h4>
+    <span><button type="submit" style="margin: 10px;" (click)="LogoutAdmin()" class="btn btn-primary pull-left" >Logout</button></span>
+    <span><button type="submit" style="margin: 10px;" (click)="OpenRideFees()" class="btn btn-primary pull-left" >Ride Fees</button></span>  
+    <span><button type="submit" style="margin: 10px;" (click)="OpenCustomerRequests()" class="btn btn-primary pull-left" >Customer Requests</button></span>  
+  </div>
+  
+
+    
+
+
+
+    
+        <div class="row mainTable">
+		
+            <div class="col-md-12">
+            
+            
+<table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    				<thead style="Background-color:cornflowerblue; color:white;">
+				       <tr style="white-space: nowrap;">
+                        <th class="hidden-xs">ID</th>
+                        <th>Customer Personal Info</th>
+                        <th>Location</th>
+                        <th>Passengers</th>
+                        <th>Ride Date & Time</th>
+                        <th>Amount</th>
+                        <th>Options</th>
+                    </tr> 
+					</thead>
+
+					<!-- <tfoot style="Background-color:cornflowerblue; color:white;">
+					       <tr style="white-space: nowrap;">
+                        <th class="hidden-xs">ID</th>
+                        <th>Customer Personal Info</th>
+                        <th>Location</th>
+                        <th># of Passengers</th>
+                        <th>Pick-Up Date&Time</th>
+                        <th>Amount</th>
+                        <th style="text-align: center;"><em class="fa fa-cog"></em></th>
+                    </tr> 
+					</tfoot> -->
+
+					<tbody>
+		    <tr class="active" *ngFor="let cust of customer; let i = index" style="white-space: nowrap;">
+                            <td class="hidden-xs">{{i+1}}</td>
+                            <td><a type="link" class="showinfo" style="cursor:pointer;" (click)="ShowCustInfo(i)">Show Info</a></td>
+                            <td><div style="padding-bottom: 10px;"><strong>Pick-Up:</strong> {{cust.CustAddress}}</div> <div><strong>Drop-Off:</strong> {{cust.DropOffLoc}}</div></td>
+                            <td><i class="fa fa-users" aria-hidden="true"></i> {{cust.NumOfPassengers}}</td>                       
+                            <td *ngIf="cust.PickUpDate">
+                              <div style="padding-bottom: 10px;">
+                                <i class="fa fa-calendar" aria-hidden="true"></i> {{cust.PickUpDate.replace('T00:00:00.000Z', '')}}
+                              </div>
+                              <div>
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> {{cust.PickUpTime}}
+                              </div>
+                            </td>
+                            <td><div style="padding-bottom: 10px;"><strong>Estimated Amount:</strong> ${{cust.OrignalAmt}}</div> <div><strong style="color:green;">Accepted Amount:</strong> ${{cust.AcceptedAmt}}</div></td>
+                            <td align="center">
+                              <button class="btn btn-default accept" 
+                                (click)="onAccept(i, cust.CustID); cust.RideAccepted = !cust.RideAccepted;" 
+                                [disabled]="cust.RideAccepted == true || deleting == true" 
+                                [style.background-color] = "cust.RideAccepted == true ? 'green' : ''"
+                                [style.color] = "cust.RideAccepted == true ? 'white' : ''">{{Accept}}</button>
+                              <button *ngIf="cust.RideAccepted != true" class="btn btn-danger decline - {{i}}" [disabled]="deleting == true" (click)="DeclineCusReq(i)">Decline</button>
+                            </td>
+                          </tr>
+						
+					</tbody>
+				</table>
+
+	
+	</div>
+	</div>
+</div>
+
+
+
+<div *ngIf="showCustInfo == true" class="modal fade show in danger" id="myModal" role="dialog">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" (click)="CloseCustInfo()" >×</button>
+        <h4 class="modal-title custom_align" id="Heading">Customer Info</h4>
+      </div>
+          <div class="modal-body">       
+             <h4 class="modal-title custom_align" id="Heading">Full Name: {{Info_FirstName}} {{Info_LastName}}</h4> 
+            <h4 class="modal-title custom_align" id="Heading">Email: {{Info_Email}}</h4>
+             <h4 class="modal-title custom_align" id="Heading">Phone: {{Info_Phone}}</h4> 
+        </div>
+      </div>
+        </div>
+
+    <!-- /.modal-content --> 
+  </div>
+
+
+
+  <div *ngIf="DeclineReq == true" class="modal fade show in danger" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal">x</button> -->
+                <h4 class="modal-title">Reason for Declining</h4>
+            </div>
+
+                        <div class="modal-body">
+    						<div class="widget-area no-padding blank">
+								<div class="status-upload">
+									<form>
+                                        <textarea 
+                                            placeholder="Please tell Customer the Reason for Declining?" 
+                                            style="height: 150px; width: 100%;" 
+                                            name="NgDriverComment" 
+                                            [(ngModel)]="NgDriverComment" 
+                                            #DriverComment="ngModel">
+                                        </textarea>
+									</form>
+								</div><!-- Status Upload  -->
+							</div><!-- Widget Area -->
+						</div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success green" (click)="DeclineReqReason()">Decline</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+  <div *ngIf="UpdateFees == true">
+
+<form class="form-horizontal updateFees" style="height: 100%;">
+<fieldset>
+      
+<!-- Form Name -->
+<legend>Ride Fees</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Fee Per Mile:</label>  
+  <div class="col-md-4">
+  <span style="position: absolute; top: 7px; margin-left: 4px;">$</span>
+  <input 
+  type="text" 
+  name="ngFeePerMile" 
+  [(ngModel)]="ngFeePerMile"
+  #feeMile="ngModel"
+  class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Fee Per Passenger:</label>  
+  <div class="col-md-4">
+  <span style="position: absolute; top: 7px; margin-left: 4px;">$</span>
+  <input 
+  type="text" 
+  name="ngFeePerPassenger" 
+  [(ngModel)]="ngFeePerPassenger"
+  #feePassenger="ngModel"
+  class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Base Fee:</label>  
+  <div class="col-md-4">
+  <span style="position: absolute; top: 7px; margin-left: 4px;">$</span>
+  <input 
+  type="text" 
+  name="ngBaseFee" 
+  [(ngModel)]="ngBaseFee"
+  #baseFee="ngModel"
+  class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Button (Double) -->
+<div class="form-group">
+  <div class="col-md-8">
+    <button *ngIf="newPricingSaved == true" id="button2id" name="button2id" class="btn btn-success pull-right" style="margin-left: 10px;" (click)="newPricingSaved = false; UpdateFees = false;">Done</button>
+    <button id="button1id" name="button1id" class="btn btn-success pull-right" style="margin-left: 10px;" (click)="UpdateRideFees(feeMile.value, feePassenger.value, baseFee.value)">Update Fees</button>
+    <button id="button2id" name="button2id" class="btn btn-danger pull-right"  style="margin-left: 10px;" (click)="UpdateFees = false">Cancel</button>
+  </div>
+  <div *ngIf="newPricingSaved == true" class="col-md-8">
+    <div class="alert alert-success" role="alert">
+      <strong>Price Update Successful!</strong>
+    </div>
+  </div>
+</div>
+
+
+</fieldset>
+</form>
+
+
+
+       <!-- <div class="container" style="width: 570px;"> -->
+
+          <!-- <div class="jumbotron">
+                        <div class="centered">
+                                        <fieldset style="text-align: center;">
+                                                    <h4 style = "display: inline-block; border-bottom: 2px lightgray solid; width: 300px;">Ride Fee Estimate</h4>
+                                        </fieldset>
+
+                                        
+                                        <fieldset>
+                                            <div class="col-md-10 col-md-offset-1" style="background-color: white; height: auto; text-align: center; padding-top: 15px; margin-top: 10px; border: 1px lightgray solid;">
+
+                                                <div *ngIf="RidePaymentDetails == undefinied">
+                                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color:cyan; font-size:6em;"></i> 
+                                                </div>
+                                                <div>
+                                                    <ul class="requestElems">
+                                                      <li class="form-group field firstNameWrapper" style="display: inline-block;">
+                                                        <div>    
+                                                            <input 
+                                                                type="text" 
+                                                                class="form-control inputText" 
+                                                                id="firstName">
+                                                            <span class="floating-label" for="firstName">First Name</span>
+                                                        </div>
+                                                      </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                        </div> -->
+          <!-- </div> -->
+
+      <!-- </div>  -->
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container">
+    <div class="row" class="width: fit-content;">
+
+    
+        <div class="col-lg-12 col-md-offset-1" style="height:515px;overflow:scroll; overflow:auto;" (scroll)="onScroll($event)">
+
+            <div class="panel panel-default panel-table" style="width: fit-content;">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col col-xs-6" class="width: fit-content;">
+                    <h3 class="panel-title">Your Customer List</h3>
+                  </div>
+
+                </div>
+              </div>
+              <div class="panel-body">
+                <table class="table table-striped table-bordered table-list" style="font-size: smaller;">
+                  <thead>
+                    <tr style="white-space: nowrap;">
+                        <th class="hidden-xs">ID</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Email</th>
+                        <th>Phone #</th>
+                        <th>Customer Address</th>
+                        <th>Drop off Location</th>
+                        <th># of Passengers</th>
+                        <th>Pick-up Date</th>
+                        <th>Pick-up Time</th>
+                        <th>Orignal Amount</th>
+                        <th>Accepted Amount</th>
+                        <th style="text-align: center;"><em class="fa fa-cog"></em></th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                          <tr class="active" *ngFor="let cust of customer; let i = index" style="white-space: nowrap;">
+                            <td class="hidden-xs">{{i+1}}</td>
+                            <td>{{cust.FirstName}}</td>
+                            <td>{{cust.LastName}}</td>
+                            <td>{{cust.EmailAddr}}</td>
+                            <td>{{cust.PhoneNum}}</td>
+                            <td>{{cust.CustAddress}}</td>
+                            <td>{{cust.DropOffLoc}}</td>     
+                            <td>{{cust.NumOfPassengers}}</td>                       
+                            <td *ngIf="cust.PickUpDate">{{cust.PickUpDate.replace('T00:00:00.000Z', '')}}</td>
+                            <td>{{cust.PickUpTime}}</td>
+                            <td>${{cust.OrignalAmt}}</td>
+                            <td>${{cust.AcceptedAmt}}</td>
+                            <td align="center">
+                              <button class="btn btn-default accept" 
+                                (click)="onAccept(i, cust.CustID); cust.RideAccepted = !cust.RideAccepted;" 
+                                [disabled]="cust.RideAccepted == true || deleting == true" 
+                                [style.background-color] = "cust.RideAccepted == true ? 'green' : ''"
+                                [style.color] = "cust.RideAccepted == true ? 'white' : ''">{{Accept}}</button>
+                              <button *ngIf="cust.RideAccepted != true" class="btn btn-danger decline - {{i}}" [disabled]="deleting == true" (click)="deleteItem(i, cust.CustID);">Decline</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                </table>
+            
+              </div>
+              <div class="panel-footer">
+                <div class="row">
+                  <div class="col col-xs-4">Page 1 of 5
+                  </div>
+                  <div class="col col-xs-8">
+                    <ul class="pagination hidden-xs pull-right">
+                      <li><a href="#">1</a></li>
+                      <li><a href="#">2</a></li>
+                      <li><a href="#">3</a></li>
+                      <li><a href="#">4</a></li>
+                      <li><a href="#">5</a></li>
+                    </ul>
+                    <ul class="pagination visible-xs pull-right">
+                        <li><a href="#">«</a></li>
+                        <li><a href="#">»</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+</div></div></div>
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+<!-- <div class="container">
+    <div class="row col-md-6 col-md-offset-2 custyle">
+    <table class="table table-striped custab">
+    <thead>
+        <tr>
+                <th>Customer Number</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Pick-up Date</th>
+                <th>Pick-up Time</th>
+                <th>Customer Address</th>
+                <th>Drop off Location</th>
+                <th># of Passengers</th>
+                <th>Phone #</th>
+                <th>Accepted Amount</th>
+                <th>Orignal Amount</th>
+                <th class="text-center">Option 1</th>
+                <th class="text-center">Option 2</th>
+        </tr>
+    </thead>
+            <tr class="active" *ngFor="let cust of customer; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{cust.FirstName}}</td>
+                <td>{{cust.LastName}}</td>
+                <td>{{cust.EmailAddr}}</td>
+                <td *ngIf="cust.PickUpDate">{{cust.PickUpDate.replace('T00:00:00.000Z', '')}}</td>
+                <td>{{cust.PickUpTime}}</td>
+                <td>{{cust.CustAddress}}</td>
+                <td>{{cust.DropOffLoc}}</td>
+                <td>{{cust.NumOfPassengers}}</td>
+                <td>{{cust.PhoneNum}}</td>
+                <td>${{cust.AcceptedAmt}}</td>
+                <td>${{cust.OrignalAmt}}</td>
+                <td><button class="btn btn-default accept" 
+                    (click)="onAccept(i, cust.CustID); cust.RideAccepted = !cust.RideAccepted;" 
+                    [disabled]="cust.RideAccepted == true || deleting == true" 
+                    [style.background-color] = "cust.RideAccepted == true ? 'green' : ''"
+                    [style.color] = "cust.RideAccepted == true ? 'white' : ''">{{Accept}}</button></td>
+                <td><button *ngIf="cust.RideAccepted != true" class="btn btn-danger decline - {{i}}" [disabled]="deleting == true" (click)="deleteItem(i, cust.CustID);">Decline</button></td>
+            </tr>
+            
+    </table>
+    </div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div *ngIf="!initialized" style="margin-top: 100px;">
+    <!-- <img [src]="fullPath" /> -->
+   <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color:cyan; font-size:6em;"></i> <!-- This is FONT-AWESOME -->
+
+</div> 
+<!--
+<div *ngIf="!initialized">LOADING...</div> 
+-->

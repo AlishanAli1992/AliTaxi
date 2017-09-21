@@ -1,0 +1,83 @@
+<div *ngIf="initialized">
+
+    <div *ngIf="customer.length == 0">
+            <h1>Page Not Found!</h1>
+    </div>
+
+        <div class="container">
+        <h2>Welcome to the Admin Portal!</h2>
+        <p>Please Accept or Decline Customer's Ride Request</p>
+        <button type="submit" (click)="LogoutAdmin()" class="btn btn-primary pull-right" >Logout</button>
+            <br>
+ <!--           
+<div class="input-group">
+<span class="input-group-btn">
+<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+</span>
+<input type="text" (keyup)="0" #input1 class="form-control" placeholder="Search for...">
+</div>
+
+
+<div class="form-group">
+         <label>Filter </label>
+         <input  type="text"  name="inputName" [(ngModel)]="inputName"/>
+         <input type="button" value="Apply"/>
+</div>
+
+-->
+
+<br>
+    <div style="height:600px;overflow:scroll" (scroll)="onScroll($event)">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Customer Number</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Pick-up Date</th>
+                <th>Pick-up Time</th>
+                <th>Customer Address</th>
+                <th>Drop off Location</th>
+                <th># of Passengers</th>
+                <th>Phone #</th>
+                <th>Option 1</th>
+                <th>Option 2</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="active" *ngFor="let cust of customer; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{cust.FirstName}}</td>
+                <td>{{cust.LastName}}</td>
+                <td>{{cust.EmailAddr}}</td>
+                <td *ngIf="cust.PickUpDate">{{cust.PickUpDate.replace('T00:00:00.000Z', '')}}</td>
+                <td>{{cust.PickUpTime}}</td>
+                <td>{{cust.CustAddress}}</td>
+                <td>{{cust.DropOffLoc}}</td>
+                <td>{{cust.NumOfPassengers}}</td>
+                <td>{{cust.PhoneNum}}</td>
+                <td><button class="btn btn-default accept" 
+                    (click)="onAccept(i, cust.CustID); cust.RideAccepted = !cust.RideAccepted;" 
+                    [disabled]="cust.RideAccepted == true || deleting == true" 
+                    [style.background-color] = "cust.RideAccepted == true ? 'green' : ''"
+                    [style.color] = "cust.RideAccepted == true ? 'white' : ''">{{Accept}}</button></td>
+                <td><button *ngIf="cust.RideAccepted != true" class="btn btn-danger decline - {{i}}" [disabled]="deleting == true" (click)="deleteItem(i, cust.CustID);">Decline</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+        </div>
+
+</div>
+
+<div *ngIf="!initialized">
+    <!-- <img [src]="fullPath" /> -->
+   <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color:cyan; font-size:6em;"></i> <!-- This is FONT-AWESOME -->
+
+</div> 
+<!--
+<div *ngIf="!initialized">LOADING...</div> 
+-->
+

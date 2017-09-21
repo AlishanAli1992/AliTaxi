@@ -1,0 +1,17 @@
+
+
+.alert-success {
+        margin-top: 10px;
+    }
+
+@media (max-width: 667px ) {
+
+    fieldset {
+        margin: 30px;
+    }
+
+    .alert-success {
+        margin-top: 50px;
+    }
+
+}

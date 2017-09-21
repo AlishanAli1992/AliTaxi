@@ -1,0 +1,324 @@
+/* .actions button {
+    color: White;
+    margin: 0;
+    cursor: pointer;
+    background-color: green;
+    width: 300px;
+  }
+
+  p {
+    margin-top: 15px;
+  }
+
+  .error {
+    font-size: smaller;
+    color: red;
+  }
+
+  img {
+    margin-left: 25px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 558px;
+    height: 558px;
+    border: 1px solid lightgray;
+  }
+
+  .lblBookRide {
+    width: 100%;
+    display: inline-block;
+    padding-top: 5px !important;
+    border-bottom: 1px lightgray solid;
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #333333;
+  }
+
+  section {
+    margin-top: 50px;
+    min-height: 463px;
+    padding: 10px 20px 0px 20px;
+    width: auto;
+    height: 53em;
+    background-color: white;
+  }
+
+  fieldset {
+    width: fit-content;
+    height: 600px;
+  }
+
+  label {
+    color: black;
+  }
+
+  .widget_container .lblRequest label {
+    font-size: 22px;
+    font-weight: 900px;
+    width: 400px;
+    padding: 30px;
+  }
+
+  lblRequest {
+    margin: 0px 0px 100px 0px;
+  }
+
+  ul, li {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+  }
+
+  li {
+    width: 10.857em;
+  }
+
+  .widget_container {
+    width: 328px;
+    float: left;
+  }
+
+  article {
+    margin: 0;
+  }
+
+  #TaxiForm{
+    font-family: DIN-Bold-Italic,Verdana,sans-serif;
+    color:#6b6659;
+    background:#ededed;
+    padding:15px;
+  }
+
+  #TaxiForm h1{
+    text-transform: uppercase;
+    float:left;
+    margin: 0;
+    font-size: 34px;
+    letter-spacing: -1px;
+    margin-top: 0;
+  }
+
+  #TaxiForm form {
+    float:right;
+    margin-top:15px;
+  }
+
+  #TaxiForm input[type="text"]{
+    padding:4px;
+    height:25px;
+    width:250px;
+  }
+
+
+  #TaxiForm .error-msgs{
+    color: red;
+  }
+
+
+  input:focus ~ .floating-label,
+input:not(:focus):valid ~ .floating-label{
+  margin-top: -30px;
+  opacity: 1;
+}
+
+.inputText {
+  font-size: 14px;
+  width: 150px;
+  height: 35px;
+  margin-top: 20;
+}
+
+.floating-label {
+    position: absolute;
+    pointer-events: none;
+    left: auto;
+    padding-left: 35px;
+    top: 25%;
+    transition: 0.5s ease all;
+}
+
+
+
+.detailBox {
+    width:320px;
+    border:1px solid #bbb;
+    margin:50px;
+    float: right;
+}
+.titleBox {
+    background-color:#fdfdfd;
+    padding:10px;
+}
+.titleBox label{
+  color:#444;
+  margin:0;
+  display:inline-block;
+}
+
+.commentBox {
+    padding:10px;
+    border-top:1px dotted #bbb;
+}
+.commentBox .form-group:first-child, .actionBox .form-group:first-child {
+    width:80%;
+}
+.commentBox .form-group:nth-child(2), .actionBox .form-group:nth-child(2) {
+    width:18%;
+}
+.actionBox .form-group * {
+    width:100%;
+}
+.taskDescription {
+    margin-top:10px 0;
+}
+.commentList {
+    padding:0;
+    list-style:none;
+    max-height:200px;
+    overflow:auto;
+}
+.commentList li {
+    margin:0;
+    margin-top:10px;
+}
+.commentList li > div {
+    display:table-cell;
+}
+.commenterImage {
+    width:30px;
+    margin-right:5px;
+    height:100%;
+    float:left;
+}
+.commenterImage img {
+    width:100%;
+    border-radius:50%;
+}
+.commentText p {
+    margin:0;
+}
+.sub-text {
+    color:#aaa;
+    font-family:verdana;
+    font-size:11px;
+}
+.actionBox {
+    border-top:1px dotted #bbb;
+    padding:10px;
+} */
+
+
+
+.portlet.box.blue {
+    border: 1px solid #60aee4;
+    border-top: 0;
+}
+
+.portlet.box.blue > .portlet-title {
+    background-color: #3598dc;
+}
+
+.portlet.box > .portlet-title {
+    border-bottom: 0;
+    padding: 0 10px;
+    margin-bottom: 0;
+    color: #fff;
+}
+
+.form .form-body {
+    padding: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+
+.portlet > .portlet-title > .caption {
+    display: inline-block;
+    font-size: 18px;
+    padding: 10px 0;
+}
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon > i {
+    color: #ccc;
+    display: block;
+    position: absolute;
+    margin: 11px 2px 4px 10px;
+    z-index: 3;
+    width: 16px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.input-icon > .form-control {
+    padding-left: 33px;
+}
+
+.panel-warning > .panel-heading {
+    color: white;
+    background-color: yellowgreen;
+}
+
+.panel-warning {
+    border-color: green;
+}
+
+input:focus ~ .floating-label,
+input:not(:focus):valid ~ .floating-label{
+  margin-top: -30px;
+  opacity: 1;
+}
+
+.floating-label {
+    position: absolute;
+    pointer-events: none;
+    left: auto;
+    padding-left: 13px;
+    top: 10%;
+    transition: 0.5s ease all;
+}
+
+.error {
+    color: red;
+}
+
+.allReviews {
+    padding: 0;
+    height: 450px;
+    overflow-y: auto;
+}
+
+@media (max-width: 667px ) {
+
+        .col-md-6 {
+        margin-bottom: 20px;    
+    }
+
+        .lastName {
+        margin-top: 35px;
+        margin-bottom: 0px;
+    }
+
+        .CusReviews {
+        margin-top: 30px;
+    }
+
+    .lblBookRide {
+        font-size: 12px;
+    }
+
+}

@@ -1,0 +1,65 @@
+
+
+
+<form class="form-horizontal" style="margin-top:70px; height: 100%;">
+    <fieldset>
+        
+        <!-- Form Name -->
+
+        <div style="text-align: center; margin-bottom: 50px;">
+            <header> 
+                <h4>Would you like to Cancel your current Ride Request?</h4> 
+            </header>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="textinput">What's your Email?:</label>  
+            <div class="col-md-4">
+            <input 
+            type="text" 
+            name="Ngemail" 
+            [(ngModel)]="Ngemail"
+            #feeMile="ngModel"
+            class="form-control input-md">
+                
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="textinput">What's your Phone Number?:</label>  
+            <div class="col-md-4">
+            <input 
+            type="text" 
+            name="NgPhoneNum" 
+            [(ngModel)]="NgPhoneNum"
+            #feePassenger="ngModel"
+            class="form-control input-md">
+                
+            </div>
+        </div>
+
+        <!-- Button (Double) -->
+        <div class="form-group">
+            <div class="col-md-8">
+                <button id="button1id" name="button1id" class="btn btn-success pull-right" style="margin-left: 10px;" (click)="CancelRideRequest()">Cancel Request</button>
+                <button id="button2id" name="button2id" class="btn btn-danger pull-right"  style="margin-left: 10px;" (click)="GoBackHomePage()">Go Back</button>
+            </div>
+            <div *ngIf="DeclinedRequest == true" class="col-md-8">
+                <div class="alert alert-success" role="alert">
+                <strong>Update: You Cancelled your Request Successfully!</strong>
+                </div>
+            </div>
+             <div *ngIf="NoDeclinedRequest == true" class="col-md-8">
+                <div class="alert alert-success" role="alert">
+                <strong>Sorry! Your Ride Request was either Accepted or Declined already!</strong>
+                <p>Please see your email for Driver decision confirmation</p>
+                <p>If you need help, please call 1-800-AliTaxi</p>
+                </div>
+            </div>
+        </div>
+
+
+    </fieldset>
+</form>

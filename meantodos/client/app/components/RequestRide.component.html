@@ -1,0 +1,252 @@
+  <!--
+    <div *ngFor="let cust of customer">
+        {{cust.LastName}} 
+    </div>
+      -->
+
+<div class="app-title">
+      <h1><strong>Need a Taxi?</strong></h1>
+    <br/>
+<body ng-controller="MainCtrl">
+    <form (ngSubmit)="onSubmit()" #f="ngForm">
+  <div class="form-group">
+    <label for="firstName">First Name:</label>
+    <input 
+          type="text" 
+          class="form-control" 
+          id="firstName" 
+          placeholder="Example: John"
+          #firstNameText
+          [value] = "NgfirstName"
+          (input) = "NgfirstName = $event.target.value" 
+          name = "NgfirstName"
+          [(ngModel)]="NgfirstName"
+          #firstName="ngModel"
+          (change)="log(firstName)"
+          (keypress)="omit_special_char($event)"
+          pattern="[a-zA-Z ]*"
+          required
+          minlength ="2"
+          maxlength ="20"
+          [ngStyle]="{border:!firstName.valid && firstName.touched?'solid 1px red':''}">
+  </div>
+        <div class="firstname-error" *ngIf="firstName.touched && firstName.errors">
+          <div class="alert alert-danger" *ngIf="firstName.errors.required">First Name is required!</div>
+          <div class="alert alert-danger" *ngIf="firstName.errors.minlength">First Name must be at least 3 letters!</div>
+          <div class="alert alert-danger" *ngIf="firstName.errors.pattern">Numbers are not allowed!</div>
+        </div>
+
+
+
+  <div class="form-group">
+    <label for="LastName">Last Name:</label>
+    <input 
+          type="text" 
+          class="form-control" 
+          id="LastName"
+          name="NgLastName" 
+          [(ngModel)]="NgLastName" 
+          #LastName="ngModel"
+          placeholder="Example: Snow"
+          (keypress)="omit_special_char($event)"
+          pattern="[a-zA-Z ]*"
+          required
+          minlength ="2"
+          maxlength ="20"
+          [ngStyle]="{border:!LastName.valid && LastName.touched?'solid 1px red':''}">
+  </div>
+        <div class="LastName-error" *ngIf="LastName.touched && LastName.errors">
+          <div class="alert alert-danger" *ngIf="LastName.errors.required">Last Name is required!</div>
+          <div class="alert alert-danger" *ngIf="LastName.errors.minlength">Last Name must be at least 3 letters!</div>
+          <div class="alert alert-danger" *ngIf="firstName.errors.pattern">Numbers are not allowed!</div>
+        </div>
+
+
+  <div class="form-group">
+    <label for="PickUpLocation">Pick Up Location:</label>
+    <input 
+          type="text" 
+          class="form-control" 
+          id="PickUpLocation"
+          name="NgPickUpLoc" 
+          [(ngModel)]="NgPickUpLoc" 
+          #PickUpLoc="ngModel"
+          placeholder="11 Wall Street New York NY"
+          (keypress)="omit_special_char($event)"
+          required
+          minlength ="2"
+          maxlength ="100"
+          [ngStyle]="{border:!PickUpLoc.valid && PickUpLoc.touched?'solid 1px red':''}">
+  </div>
+        <div class="PickUpLoc-error" *ngIf="PickUpLoc.touched && PickUpLoc.errors">
+          <div class="alert alert-danger" *ngIf="PickUpLoc.errors.required">Pick-Up Location is required!</div>
+          <div class="alert alert-danger" *ngIf="PickUpLoc.errors.minlength">Pick-Up Location must be at least 3 letters!</div>
+        </div>
+
+  <div class="form-group">
+    <label for="DropOffLocation">Drop Off Locations:</label>
+    <input 
+          type="text" 
+          class="form-control" 
+          id="DropOffLocation"
+          name="NgDropOffLoc" 
+          [(ngModel)]="NgDropOffLoc" 
+          #DropOffLoc="ngModel"
+          placeholder="900 Cres Dr Beverly Hills CA"
+          (keypress)="omit_special_char($event)"
+          required
+          minlength ="2"
+          maxlength ="100"
+          [ngStyle]="{border:!DropOffLoc.valid && DropOffLoc.touched?'solid 1px red':''}">
+  </div>
+        <div class="DropOffLoc-error" *ngIf="DropOffLoc.touched && DropOffLoc.errors">
+          <div class="alert alert-danger" *ngIf="DropOffLoc.errors.required">Drop Off Location is required!</div>
+          <div class="alert alert-danger" *ngIf="DropOffLoc.errors.minlength">Drop Off Location must be at least 3 letters!</div>
+        </div>
+
+<div class="form-group">
+   <label for="dateDropDown">Pick-up Date:</label>
+   <select class="select" id="dateDropDown" name="NgDate" [(ngModel)]="NgDate" #dateDropDown="ngModel">
+        <option *ngFor="let date of value; let i = index"
+            ng-selected="date.selected">{{date}}</option>
+    </select>
+</div>
+
+<!--
+<div class="form-group">
+   <label for="dateDropDown">Pick-up Date:</label>
+   <div class="dropdown">
+  <select class="form-control" placeholder = "Select Pick-up Date">
+    <option *ngFor="let date of value; let i = index">{{date}}</option>
+    </select>
+   </div>
+</div>
+-->
+
+<!--
+  <div class="form-group">
+  <label for="PickUpDate">Pick-up Date:</label>
+  <div class="dropdown">
+    <input class="dropdown-toggle" type="text" data-toggle="dropdown" placeholder = "Select Pick-up Date" readonly>
+    <span class="caret"></span>
+    <ul class="dropdown-menu">
+      <li *ngFor="let date of value; let i = index" (click)="select(date)">{{date}}</li> 
+          
+    </ul>
+  </div>
+</div>
+-->
+
+
+  <div class="form-group">
+    <label for="PhoneNumber">Phone Number:</label>
+    <input 
+          type="number" 
+          class="form-control" 
+          id="PhoneNumber"
+          name="NgPhoneNum" 
+          [(ngModel)]="NgPhoneNum" 
+          #PhoneNum="ngModel"
+          placeholder="Ex: 9724006572"
+          required
+          minlength ="10"
+          maxlength ="15"
+          [ngStyle]="{border:!PhoneNum.valid && PhoneNum.touched?'solid 1px red':''}">
+  </div>
+        <div class="PhoneNum-error" *ngIf="PhoneNum.touched && PhoneNum.errors">
+          <div class="alert alert-danger" *ngIf="PhoneNum.errors.required">Phone number is required!</div>
+          <div class="alert alert-danger" *ngIf="PhoneNum.errors.minlength">Phone number must be at least 10 Numbers!</div>
+        </div>
+
+
+
+  <div class="form-group">
+    <label for="email">Email address:</label>
+    <input 
+          type="text" 
+          class="form-control" 
+          id="email"
+          name="Ngemail" 
+          [(ngModel)]="Ngemail" 
+          #email="ngModel"
+          placeholder="example@mail.com"
+          (change)="log(email); emailDupCheck(email.value)"
+          [value]="userEmail"
+          (input) = "userEmail = $event.target.value"
+          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+          required
+          minlength ="3"
+          maxlength ="100"
+          [ngStyle]="{border:!email.valid && email.touched?'solid 1px red':''}">
+  </div>
+        <div class="email-error" *ngIf="email.touched && email.errors">
+          <div class="alert alert-danger" *ngIf="email.errors.required">email is required!</div>
+          <div class="alert alert-danger" *ngIf="email.errors.minlength">email must be at least 3 letters!</div>
+          <div class="alert alert-danger" *ngIf="email.errors.pattern">Invalid Email Format!</div>
+        </div>
+
+
+
+  <div class="form-group">
+    <label for="reEmail">Re-Enter Email address:</label>
+    <input 
+          type="text" 
+          class="form-control" 
+          id="reEmail"
+          name="NgreEmail"
+          [(ngModel)]="NgreEmail" 
+          #reEmail="ngModel"
+          (change)="log(reEmail)"
+          [value]="userReEmail"
+          (input) = "userReEmail = $event.target.value"
+          placeholder="type email again.."
+          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+          required
+          minlength ="3"
+          maxlength ="100"
+          [ngStyle]="{border:!reEmail.valid && reEmail.touched?'solid 1px red':''}">
+  </div>
+<div class="reEmail-error" *ngIf="reEmail.touched && reEmail.errors">
+  <div class="alert alert-danger" *ngIf="reEmail.errors.required">re-enter Email is required!</div>
+  <div class="alert alert-danger" *ngIf="reEmail.errors.minlength">Email must be at least 3 letters!</div>
+  <div class="alert alert-danger" *ngIf="reEmail.errors.pattern">Invalid Email Format!</div>
+</div>
+<div class="mismatch-error" *ngIf="email.touched && userEmail != null && userEmail != '' && userReEmail != null && userReEmail != '' ">
+  <div class="alert alert-danger" *ngIf="userEmail != userReEmail">re-enter Email Must Match!</div>
+</div>
+  <button type="submit" (click)="addNewCustomer(firstName.value, LastName.value, PickUpLoc.value, DropOffLoc.value, PhoneNum.value, email.value, dateDropDown.value)" class="btn btn-primary" [disabled]="!f.valid">Submit</button>
+</form>
+</body>
+<br/>
+
+<!--
+<button (click)="AdminPortal()" class="btn btn-primary btn-block">AdminPortal</button> -->
+
+<!-- <button (click)="addNewCustomer(firstName.value, LastName.value, PickUpLoc.value, DropOffLoc.value, PhoneNum.value, email.value)" class="btn btn-primary btn-block">Create</button>-->    
+
+<!--
+<div *ngIf="custEmail">
+<div *ngFor="let email of custEmail; let i = index">
+      {{email[i].EmailAddr}}
+</div>
+</div>
+-->
+
+
+<div *ngIf="custEmail && custEmail != 0" class="modal fade show in danger" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal">x</button> -->
+                <h4 class="modal-title">Your Request is Pending!</h4>
+            </div>
+            <div class="modal-body">
+                <p>We will email you in the next 60 minutes with the decision on your request.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="ReturnTolanding()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

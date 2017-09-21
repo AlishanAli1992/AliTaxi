@@ -1,0 +1,13 @@
+
+@media (max-width: 667px ) {
+
+    .jumbotron {
+        width: 350;
+        margin-top: 30;
+    }
+
+    .modal.in .modal-dialog {
+        width: 350px;
+        margin-top: 150px;
+    }
+}

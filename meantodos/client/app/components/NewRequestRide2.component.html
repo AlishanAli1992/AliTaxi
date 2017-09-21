@@ -1,0 +1,391 @@
+<form (ngSubmit)="onSubmit()" #f="ngForm" method="post" id="myForm" role="form" class="form-horizontal" style="margin-top: 50px;">
+			<div class="col-md-8 col-sm-7">
+					<div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption">
+								<div class="lblBookRide">
+                                   <i class="fa fa-user"></i>
+                                    Schedule A Ride
+                                </div>
+                            </div>
+                                <div class="welcomeBack" style="float:right; padding: 10px 0; color: white;">
+                                    <div *ngIf="firstNameStored != undefined" style="float: right; font-size: 12px; font-weight: bold; margin-left: 10px;"> Welcome back {{firstNameStored}}!</div>
+                                    <a *ngIf="firstNameStored != undefined && clearSearch == true" style="float: right; font-size: 12px; cursor: pointer; color: white;" (click)="clearPreviousSearch()"> clear search? </a>
+                                </div>
+						</div>
+						<div class="portlet-body form">
+<!-- 
+                            <div class="row form-group">
+									
+										<div class="col-md-3" style="">
+                                            <div *ngIf="firstNameStored != undefined" style="float: right; font-size: 55%; font-weight: bold;"> Welcome back {{firstNameStored}}!</div>
+                                            <a *ngIf="firstNameStored != undefined && clearSearch == true" style="float: right; font-size: small; cursor: pointer;" (click)="clearPreviousSearch()"> clear search? </a>
+
+                                        </div>
+                            </div> -->
+                                        
+							
+								<div class="form-body">
+									<div class="row form-group">
+									
+										<div class="col-md-6">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputText" 
+                                                    id="firstName" 
+                                                    #firstNameText
+                                                    [value] = "NgfirstName"
+                                                    (input) = "NgfirstName = $event.target.value" 
+                                                    name = "NgfirstName"
+                                                    [(ngModel)]="NgfirstName"
+                                                    #firstName="ngModel"
+                                                    (change)="log(firstName)"
+                                                    (keypress)="omit_special_char($event)"
+                                                    pattern="[a-zA-Z ]*"
+                                                    required
+                                                    minlength ="2"
+                                                    maxlength ="20"
+                                                    [ngStyle]="{border:!firstName.valid && firstName.touched?'solid 1px red':''}">
+                                                <span class="floating-label" for="firstName">First Name</span>
+
+                                                    <div class="firstName-error" *ngIf="firstName.touched && firstName.errors">
+                                                        <div class="error" *ngIf="firstName.errors.required">First Name is required!</div>                               
+                                                        <div *ngIf ="firstName != null && firstName != ''">
+                                                            <div class="error" *ngIf="firstName.errors.pattern">Numbers are not allowed!</div>
+                                                        </div>
+                                                        <div *ngIf ="firstName != null && firstName != ''">
+                                                            <div *ngIf="!firstName.errors.pattern">
+                                                                <div class="error" *ngIf="firstName.errors.minlength">First Name must be at least 2 letters!</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>                                               
+                                        </div>
+
+
+                                        <div class="col-md-6 lastName">
+                                            <input 
+                                                type="text" 
+                                                class="form-control inputText" 
+                                                id="LastName"
+                                                name="NgLastName" 
+                                                [(ngModel)]="NgLastName" 
+                                                #LastName="ngModel"
+                                                (keypress)="omit_special_char($event)"
+                                                pattern="[a-zA-Z ]*"
+                                                required
+                                                minlength ="2"
+                                                maxlength ="20"
+                                                [ngStyle]="{border:!LastName.valid && LastName.touched?'solid 1px red':''}">
+                                            <span class="floating-label" for="LastName">Last Name</span>
+
+                                            <div class="LastName-error" *ngIf="LastName.touched && LastName.errors">
+                                                <div class="error" *ngIf="LastName.errors.required">Last Name is required!</div>
+                                                <div *ngIf ="LastName != null && LastName != ''">
+                                                    <div *ngIf="!LastName.errors.pattern">
+                                                        <div class="error" *ngIf="LastName.errors.minlength">First Name must be at least 2 letters!</div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf ="LastName != null && LastName != ''">
+                                                    <div class="error" *ngIf="LastName.errors.pattern">Numbers are not allowed!</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>    
+
+                                    <div class="row form-group">
+									
+										<div class="col-md-6">
+                                            <label for="PickUpLocation">Pick Up Location:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control"                                         
+                                                id="PickUpLocation"
+                                                #search
+                                                name="NgPickUpLoc" 
+                                                [(ngModel)]="NgPickUpLoc" 
+                                                #PickUpLoc="ngModel"
+                                                (change)="log(PickUpLoc); FillLocationOnChange($event); PickUpChange = true"
+                                                placeholder="Search for Location"
+                                                (keypress)="omit_special_char($event); FillLocation($event);"
+                                                required
+                                                [ngStyle]="{border:!PickUpLoc.valid && PickUpLoc.touched?'solid 1px red':''}"
+                                                autocomplete="off"
+                                                spellcheck="off"
+                                                autocorrect="off"
+                                                autocapitalize="off">
+
+                                            <div class="PickUpLoc-error" *ngIf="PickUpLoc.touched && PickUpLoc.errors">
+                                                <div class="error" *ngIf="PickUpLoc.errors.required">Pick-Up Location is required!</div>
+                                                <!-- <div class="error" *ngIf="PickUpLoc.errors.minlength">Pick-Up Location must be at least 2 letters!</div> -->
+                                            </div>
+                                            <div *ngIf ="search.value != null && search.value != '' && PickUpChange == true && search.value.length > 10">
+                                                <div class="error" *ngIf="!search.value.includes('TX')">Sorry we service only in TX</div>
+                                            </div>
+                                              
+                                        </div>
+
+
+                                        <div class="col-md-6">
+
+                                            <label for="DropOffLocation">Drop Off Locations:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="DropOffLocation"
+                                                name="NgDropOffLoc" 
+                                                [(ngModel)]="NgDropOffLoc" 
+                                                #DropOffLoc="ngModel"
+                                                placeholder="Search for Location"
+                                                (keypress)="omit_special_char($event); FillLocation($event);"
+                                                required
+                                                [ngStyle]="{border:!DropOffLoc.valid && DropOffLoc.touched?'solid 1px red':''}"
+                                                autocomplete="off"
+                                                spellcheck="off"
+                                                autocorrect="off"
+                                                autocapitalize="off"
+                                                (change)="FillLocationOnChange($event); dropOffChange = true"
+                                                #searchnew>
+
+                                                <div class="DropOffLoc-error" *ngIf="DropOffLoc.touched && DropOffLoc.errors">
+                                                    <div class="error" *ngIf="DropOffLoc.errors.required">Drop Off Location is required!</div>                              
+                                                </div>
+                                                <div *ngIf ="searchnew.value != null && searchnew.value != '' && dropOffChange == true && searchnew.value.length > 10">
+                                                    <div class="error" *ngIf="!searchnew.value.includes('TX')">Sorry we service only in TX</div>
+                                                </div>
+
+                                        </div>
+
+                                    </div>    
+
+
+                                    <div class="row form-group">
+									
+										<div class="col-md-6">
+
+                                            <label for="dateDropDown">Pick-up Date:</label>
+                                            <select class="select form-control" id="dateDropDown" name="NgDate" [(ngModel)]="NgDate" #dateDropDown="ngModel" style="border: 1px solid #ccc;" required>
+                                                <option *ngFor="let date of value; let i = index"
+                                                    ng-selected="date.selected">{{date}}</option>
+                                            </select>
+                                            <div class="dateDropDown-error" *ngIf="dateDropDown.touched && dateDropDown.errors">
+                                                <div class="error" *ngIf="dateDropDown.errors.required">Date is required!</div>
+                                            </div>
+                                                
+                                              
+                                        </div>
+
+
+                                        <div class="col-md-6">
+
+                                            <label for="timeDropDown">Pick-up Time:</label>                               
+                                            <select class="select form-control" id="timeDropDown" name="NgTime" [(ngModel)]="NgTime" #timeDropDown="ngModel" style="border: 1px solid #ccc;" required>    
+                                                <option *ngFor="let time of timeValues; let i = index"
+                                                    ng-selected="time.selected">{{time}}</option>
+                                            </select>
+                                            <div class="timeDropDown-error" *ngIf="timeDropDown.touched && timeDropDown.errors">
+                                                <div class="error" *ngIf="timeDropDown.errors.required">Pick-up Time is required!</div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>    
+
+
+                                    <div class="row form-group">
+									
+										<div class="col-md-6">
+                                            <label for="PhoneNumber">Phone Number:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                [textMask]="{mask: mask}"
+                                                id="PhoneNumber"
+                                                name="NgPhoneNum" 
+                                                [(ngModel)]="NgPhoneNum" 
+                                                #PhoneNum="ngModel" 
+                                                (change)="log(PhoneNum)"                                      
+                                                required
+                                                minlength ="10"
+                                                maxlength ="15"
+                                                [ngStyle]="{border:!PhoneNum.valid && PhoneNum.touched?'solid 1px red':''}">
+
+                                                <div class="PhoneNum-error" *ngIf="PhoneNum.touched && PhoneNum.errors">
+                                                    <div class="error" *ngIf="PhoneNum.errors.required">Phone number is required!</div>
+                                                    <div class="error" *ngIf="PhoneNum.errors.minlength">Phone number must be at least 10 Numbers!</div>
+                                                </div>  
+                                              
+                                        </div>
+
+
+                                        <div class="col-md-6">
+
+                                            <label for="PassengersDropDown"># of Passengers:</label>                               
+                                            <select class="select form-control" id="PassengersDropDown" name="NgPassengers" [(ngModel)]="NgPassengers" (change)="log(Passengers)" #Passengers="ngModel" style="border: 1px solid #ccc;" required>    
+                                                <option *ngFor="let pList of PassengersList; let i = index" ng-selected="pList.selected">{{pList}}</option>
+                                            </select>
+                                            <div class="Passengers-error" *ngIf="Passengers.touched && Passengers.errors">
+                                                <div class="error" *ngIf="Passengers.errors.required">Number of Passengers is required!</div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>    
+
+
+                                    <div class="row form-group">
+									
+										<div class="col-md-9">
+                                                
+                                            <label for="email">Email address:</label>
+                                            <div class="input-icon">
+                                                <i class="fa fa-envelope"> </i>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="email"
+                                                    name="Ngemail" 
+                                                    [(ngModel)]="Ngemail" 
+                                                    #email="ngModel"
+                                                    placeholder="example@mail.com"
+                                                    (change)="log(email); emailDupCheck(email.value)"
+                                                    [value]="userEmail"
+                                                    (input) = "userEmail = $event.target.value"
+                                                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                                    required
+                                                    minlength ="3"
+                                                    maxlength ="100"
+                                                    [ngStyle]="{border:!email.valid && email.touched?'solid 1px red':''}">
+                                            </div>
+
+                                                <div class="email-error" *ngIf="email.touched && email.errors">
+                                                    <div class="error" *ngIf="email.errors.required">email is required!</div>
+                                                    <div class="error" *ngIf="email.errors.minlength">email must be at least 3 letters!</div>
+                                                    <div class="error" *ngIf="email.errors.pattern">Invalid Email Format!</div>
+                                                </div>
+                                              
+                                        </div>
+
+                                    </div>    
+
+
+
+                                    <div class="row form-group">
+									
+										<div class="col-md-9">
+                                            
+                                            <label for="reEmail">Re-Enter Email address:</label>
+                                            <div class="input-icon">
+                                                <i class="fa fa-envelope"> </i>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="reEmail"
+                                                    name="NgreEmail"
+                                                    [(ngModel)]="NgreEmail" 
+                                                    #reEmail="ngModel"
+                                                    (change)="log(reEmail)"
+                                                    [value]="userReEmail"
+                                                    (input) = "userReEmail = $event.target.value"
+                                                    placeholder="type email again.."
+                                                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                                    required
+                                                    minlength ="3"
+                                                    maxlength ="100"
+                                                    [ngStyle]="{border:!reEmail.valid && reEmail.touched?'solid 1px red':''}">
+                                            </div>
+
+                                                <div class="reEmail-error" *ngIf="reEmail.touched && reEmail.errors">
+                                                    <div class="error" *ngIf="reEmail.errors.required">re-enter Email is required!</div>
+                                                    <div class="error" *ngIf="reEmail.errors.minlength">Email must be at least 3 letters!</div>
+                                                    <div class="error" *ngIf="reEmail.errors.pattern">Invalid Email Format!</div>
+                                                </div>
+                                                <div class="mismatch-error" *ngIf="email.touched && userEmail != null && userEmail != '' && userReEmail != null && userReEmail != '' ">
+                                                    <div class="error" *ngIf="userEmail != userReEmail">re-enter Email Must Match!</div>
+                                                </div>                                            
+                                            
+                                        </div>
+
+                                    </div>    
+
+
+                                    <div class="row form-group">
+                                        <div class="col-md-3 form-actions">
+
+                                         <button type="submit" (click)="addNewCustomer(firstName.value, LastName.value, search.value, searchnew.value, PhoneNum.value, email.value, dateDropDown.value, timeDropDown.value, Passengers.value )" class="btn btn-primary" [disabled]="!f.valid">Book it!</button>
+                                           
+                                        </div>
+                                    </div>
+
+                                </div>
+                        </div>            
+                    </div>
+            </div>
+
+
+            <div class="col-md-4 col-sm-5 CusReviews" style="">
+                 <div class="panel panel-warning fixsidebar" id="sidebar123">
+					
+					<!-- Default panel contents -->
+					<div class="panel-heading">
+						<h3 class="panel-title">Customer Reviews</h3>
+					</div>
+					<!-- List group -->
+                        <ul class="list-group allReviews">
+                            <li class="list-group-item" *ngFor="let CusReviews of allCustomerReviews; let i = index">
+                                <div class="commentText">
+                                    <p>{{CusReviews.Reviews}}</p> 
+                                    <span style="font-size:12px; color:green;">Customer: {{CusReviews.FullCusName}}</span>
+                                     <span class="date sub-text"><br>on {{CusReviews.CommentDate.replace('T00:00:00.000Z', '')}}</span>
+                                    <span *ngIf="enableDeleteComments == true"><a style="font-size: 12px; cursor:pointer;" (click)="DeleteComment(CusReviews.Reviews, i)">delete</a></span>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-icon right" style="padding-bottom: 5px;">
+                                            <i class="fa" id="icon_sta_code"></i>
+                                            <input 
+                                                class="form-control" 
+                                                type="text" 
+                                                name="NgCustReviews" 
+                                                [(ngModel)]="NgCustReviews" 
+                                                #newCustReviews="ngModel"
+                                                placeholder="Your comments"
+                                                (change)="log(newCustReviews)">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <button class="primary-button" (click)="addComment(newCustReviews.value)">Add Comment</button>
+                                <div> <span *ngIf="nonCustomer == true" style="color:red;">Please Schedule a Ride before submitting comment</span> </div>
+                            </li>
+                        </ul>
+				</div>
+            </div>
+
+</form>                                
+
+
+
+<div *ngIf="custEmail && custEmail != 0" class="modal fade show in danger" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal">x</button> -->
+                <h4 class="modal-title">Your Request is Pending!</h4>
+            </div>
+            <div class="modal-body">
+                <p>We will email you in the next 60 minutes with the decision on your request.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="ReturnTolanding()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

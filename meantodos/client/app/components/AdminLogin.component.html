@@ -1,0 +1,64 @@
+
+    	  <div class="modal-dialog" style="margin-top: 100px; height: 100%;">
+				<div class="loginmodal-container" style="background-color: darkgrey;">
+					<h1>Login to Your Account</h1><br>
+                <form (ngSubmit)="onSubmit()" #f="ngForm">
+                        <div class="form-group input-group margin-bottom-sm">
+                            <!-- <label for="Username">Username:</label> -->
+                            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="Username" 
+                                placeholder="Email address"
+                                [value] = "NgUsername"
+                                (input) = "NgUsername = $event.target.value" 
+                                name = "NgUsername"
+                                [(ngModel)]="NgUsername"
+                                #Username="ngModel"
+                                (change)="log(Username)"
+                                required
+                                minlength ="3"
+                                maxlength ="100"
+                                [ngStyle]="{border:!Username.valid && Username.touched?'solid 1px red':''}">
+                        </div>
+
+                        <div class="form-group input-group">
+                            <!-- <label for="Password">Password:</label> -->
+                            <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="Password" 
+                                placeholder="Password"
+                                [value] = "NgPassword"
+                                (input) = "NgPassword = $event.target.value" 
+                                name = "NgPassword"
+                                [(ngModel)]="NgPassword"
+                                #Password="ngModel"
+                                (change)="log(Password)"
+                                required
+                                minlength ="3"
+                                maxlength ="100"
+                                [ngStyle]="{border:!Password.valid && Password.touched?'solid 1px red':''}">
+                        </div>
+                            <input type="submit" (click)="LoginAdmin(Username.value, Password.value)" class="login loginmodal-submit" value="Login" [disabled]="!f.valid">
+                            <span *ngIf="serviceLoading == true">LOADING...</span>
+                            <div class="alert alert-danger" *ngIf="wrongCred == true">Username or Password is incorrect, please try again!</div>
+                </form>
+
+                <!-- <div class="login-help">
+					<a href="#">Register</a> - <a href="#">Forgot Password</a>
+				  </div> -->
+				</div>
+			</div>
+		
+
+<!--
+<div *ngIf="adminUser">
+    <div *ngFor="let user of adminUser">
+        {{user[0].Username}}
+        {{user[0].Password}}
+    </div>
+</div>
+-->

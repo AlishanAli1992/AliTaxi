@@ -1,0 +1,113 @@
+
+
+    <div class="container" style="width: 570px;">
+
+      <div class="jumbotron">
+                    <div class="centered">
+                                    <fieldset style="text-align: center;">
+                                                <h4 style = "display: inline-block; border-bottom: 2px lightgray solid; width: 300px;">Ride Fee Estimate</h4>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <div class="col-md-10 col-md-offset-1" style="background-color: white; height: 50px; text-align: center; padding-top: 15px; border: 1px lightgray solid; border-bottom: 3px lightgray solid;">
+                                            <span style="float: left;"><strong>From:</strong></span> 
+                                            <span style="font-size: smaller; margin-left: 10px;"> {{FromPlace}} </span>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <div class="col-md-10 col-md-offset-1" style="background-color: white; height: 50px; text-align: center; padding-top: 15px; border: 1px lightgray solid;">
+                                            <span style="float: left;"><strong>To:</strong></span> 
+                                            <span style="font-size: smaller; margin-left: 10px;"> {{ToPlace}} </span>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <div class="col-md-10 col-md-offset-1" style="background-color: white; height: auto; text-align: center; padding-top: 15px; margin-top: 10px; border: 1px lightgray solid;">
+
+                                            <div *ngIf="googleDistanceInfo == undefinied || numOfPassengers == undefinied || totalPayment == undefinied || RidePaymentDetails == undefinied">
+                                                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color:cyan; font-size:6em;"></i> <!-- This is FONT-AWESOME -->
+                                            </div>
+
+                                            <div *ngIf="googleDistanceInfo.length != 0 && numOfPassengers.length != 0 && totalPayment.length != 0" style="text-align: left;">
+                                                <div style="font-size: smaller; display: block; float: left; width: 100%;"> <strong>Distance: </strong>{{googleDistanceInfo.rows[0].elements[0].distance.text}}les <span style ="font-size: 85%; position: absolute; margin-left: 1%;">*${{RidePaymentDetails[0].FeePerMile}} per mile</span> </div>
+                                                <div style="font-size: smaller; display: block; float: left; width: 100%;"> <strong>Duration: </strong>{{googleDistanceInfo.rows[0].elements[0].duration.text}} </div>
+                                                <div style="font-size: smaller; display: block; float: left; width: 100%;"> <strong>Extra Passengers: </strong> {{numOfPassengers}} <span style ="font-size: 85%; position: absolute; margin-left: 1%;">*${{RidePaymentDetails[0].FeePerPassenger}} per extra passenger</span> </div>
+                                                <div style="font-size: smaller; display: block; float: left; width: 100%;"> <strong>Base Fee: </strong>${{RidePaymentDetails[0].BaseFee}}</div>
+                                                <div style="font-size: x-small; display: block; float: left; width: 100%;"> <strong>For rides greater then 20 miles or involving Airport, Toll will be added: </strong> $5</div>
+                                                 <div style="font-size: 450%; display: block; text-align: center; width: 100%;">
+                                                   
+                                                    <i style="font-size: 40px; cursor: pointer;" class="fa fa-minus" (click)="SubtractFee()"></i>
+                                                    
+                                                    ${{totalPayment}} 
+                                                    
+                                                    <i style="font-size: 40px; cursor: pointer;" class="fa fa-plus" (click)="AddFee()"></i>
+
+                                                    <div *ngIf="subErrorMsg == true" style="color: red; font-size: 19%;"> Warning: lowering the fee "could" result in ride being declined!</div>
+
+                                                </div>   
+
+                                                <!-- <div>
+                                                   
+                                                    <i style="font-size: 40px; cursor: pointer;" class="fa fa-plus" (click)="AddFee()"></i>
+                                                    
+                                                    <div style="font-size: 450%; display: block; text-align: center; width: 100%;"> ${{totalPayment}} </div>
+                                                    
+                                                    <i style="font-size: 40px; cursor: pointer;" class="fa fa-minus" (click)="SubtractFee()"></i>
+
+                                                </div>   -->
+
+                                            </div>
+
+                                           
+                                            
+                                        </div>
+                                    </fieldset>
+
+                                <fieldset style="text-align: center;">
+                                      <p style="margin-bottom: 0;"><button class="btn btn-lg btn-success" style="width: 80%; margin-top: 3%;" (click)="ConfirmAmount()" [disabled]="googleDistanceInfo == undefinied || numOfPassengers == undefinied || totalPayment == undefinied" role="button">Confirm</button></p>
+                                      <p><button class="btn btn-lg btn-danger" style="width: auto; margin-top: 3%;" (click)="CustDeclinedAmt()" [disabled]="googleDistanceInfo == undefinied || numOfPassengers == undefinied || totalPayment == undefinied" role="button">Decline</button></p>
+                                </fieldset>
+                    </div>
+      </div>
+
+    </div>
+
+
+
+
+
+
+
+
+<div *ngIf="custDecAmt == true" class="modal fade show in danger" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal">x</button> -->
+                <h4 class="modal-title">Reason for Declining</h4>
+            </div>
+
+                        <div class="modal-body">
+    						<div class="widget-area no-padding blank">
+								<div class="status-upload">
+									<form>
+                                        <textarea 
+                                            placeholder="We are Sorry! Please tell us the Reason for Declining?" 
+                                            style="height: 150px; width: 100%;" 
+                                            name="NgCusComment" 
+                                            [(ngModel)]="NgCusComment" 
+                                            #CusComment="ngModel">
+                                        </textarea>
+									</form>
+								</div><!-- Status Upload  -->
+							</div><!-- Widget Area -->
+						</div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success green" (click)="ReturnTolanding()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

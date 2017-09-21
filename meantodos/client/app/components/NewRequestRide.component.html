@@ -1,0 +1,332 @@
+
+    <section class="rideSignUp_info">
+        <div class = "widget_container" style="width: 400px; padding: 30px;">
+            <article ng-controller="MainCtrl" id = "book-ride">
+                <form (ngSubmit)="onSubmit()" #f="ngForm">
+                    <fieldset>
+                        <legend style="display: none;">Booking</legend>
+                        <!-- <ul class="lblBookRide">
+                            <li class = "lblRequest" style="display: inline-block;">
+                                <label for="lblBookRide">Book A Ride:</label>
+                            </li>
+                        </ul> -->
+                        <div class="lblBookRide">
+                            <label for="lblBookRide">Schedule A Ride</label> <span *ngIf="firstNameStored != undefined" style="float: right; font-size: 55%; color: blueviolet; font-weight: bold;"> Welcome back {{firstNameStored}}!</span>
+                            <a *ngIf="firstNameStored != undefined && clearSearch == true" style="float: right; font-size: small; cursor: pointer;" (click)="clearPreviousSearch()"> clear search? </a>
+                        </div>
+                        <div style="height:fit-content;">    
+                            <ul class="requestElems">
+                                <li class="form-group field firstNameWrapper" style="display: inline-block;">
+                                <div>    
+                                    <input 
+                                        type="text" 
+                                        class="form-control inputText" 
+                                        id="firstName" 
+                                        #firstNameText
+                                        [value] = "NgfirstName"
+                                        (input) = "NgfirstName = $event.target.value" 
+                                        name = "NgfirstName"
+                                        [(ngModel)]="NgfirstName"
+                                        #firstName="ngModel"
+                                        (change)="log(firstName)"
+                                        (keypress)="omit_special_char($event)"
+                                        pattern="[a-zA-Z ]*"
+                                        required
+                                        minlength ="2"
+                                        maxlength ="20"
+                                        [ngStyle]="{border:!firstName.valid && firstName.touched?'solid 1px red':''}">
+                                    <span class="floating-label" for="firstName">First Name</span>
+                                </div>
+                                
+                                    <div class="container">
+                                        <div class="firstName-error" *ngIf="firstName.touched && firstName.errors">
+                                            <div class="error" *ngIf="firstName.errors.required">First Name is required!</div>                               
+                                            <div *ngIf ="firstName != null && firstName != ''">
+                                                <div class="error" *ngIf="firstName.errors.pattern">Numbers are not allowed!</div>
+                                            </div>
+                                            <div *ngIf ="firstName != null && firstName != ''">
+                                                <div *ngIf="!firstName.errors.pattern">
+                                                    <div class="error" *ngIf="firstName.errors.minlength">First Name must be at least 2 letters!</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="form-group field lastNameWrapper" style="display: block; float: right;"> 
+                                <div>                           
+                                    <input 
+                                        type="text" 
+                                        class="form-control inputText" 
+                                        id="LastName"
+                                        name="NgLastName" 
+                                        [(ngModel)]="NgLastName" 
+                                        #LastName="ngModel"
+                                        (keypress)="omit_special_char($event)"
+                                        pattern="[a-zA-Z ]*"
+                                        required
+                                        minlength ="2"
+                                        maxlength ="20"
+                                        [ngStyle]="{border:!LastName.valid && LastName.touched?'solid 1px red':''}">
+                                    <span class="floating-label" for="LastName">Last Name</span>
+                                </div>
+                                
+                                    <div class="container">
+                                        <div class="LastName-error" *ngIf="LastName.touched && LastName.errors">
+                                            <div class="error" *ngIf="LastName.errors.required">Last Name is required!</div>
+                                            <div *ngIf ="LastName != null && LastName != ''">
+                                                <div *ngIf="!LastName.errors.pattern">
+                                                    <div class="error" *ngIf="LastName.errors.minlength">First Name must be at least 2 letters!</div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf ="LastName != null && LastName != ''">
+                                                <div class="error" *ngIf="LastName.errors.pattern">Numbers are not allowed!</div>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </li>
+                                <li class="form-group field pickUpLocationWrapper" style="display: inline-block; float: none; width: 100%; margin-top: 15px;">
+                                    <label for="PickUpLocation">Pick Up Location:</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control"                                         
+                                        id="PickUpLocation"
+                                        #search
+                                        name="NgPickUpLoc" 
+                                        [(ngModel)]="NgPickUpLoc" 
+                                        #PickUpLoc="ngModel"
+                                        (change)="log(PickUpLoc); FillLocationOnChange($event); PickUpChange = true"
+                                        placeholder="Search for Location"
+                                        (keypress)="omit_special_char($event); FillLocation($event);"
+                                        required
+                                        [ngStyle]="{border:!PickUpLoc.valid && PickUpLoc.touched?'solid 1px red':''}"
+                                        autocomplete="off"
+                                        spellcheck="off"
+                                        autocorrect="off"
+                                        autocapitalize="off">
+
+                                    <div class="PickUpLoc-error" *ngIf="PickUpLoc.touched && PickUpLoc.errors">
+                                        <div class="error" *ngIf="PickUpLoc.errors.required">Pick-Up Location is required!</div>
+                                        <!-- <div class="error" *ngIf="PickUpLoc.errors.minlength">Pick-Up Location must be at least 2 letters!</div> -->
+                                    </div>
+                                    <div *ngIf ="search.value != null && search.value != '' && PickUpChange == true && search.value.length > 10">
+                                        <div class="error" *ngIf="!search.value.includes('TX')">Sorry we service only in TX</div>
+                                    </div>
+
+                                </li>
+                                <li class="form-group field dropOffLocationWrapper" style="display: inline-block; float: none; width: 100%; margin-top: 15px;">
+                                    <label for="DropOffLocation">Drop Off Locations:</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="DropOffLocation"
+                                        name="NgDropOffLoc" 
+                                        [(ngModel)]="NgDropOffLoc" 
+                                        #DropOffLoc="ngModel"
+                                        placeholder="Search for Location"
+                                        (keypress)="omit_special_char($event); FillLocation($event);"
+                                        required
+                                        [ngStyle]="{border:!DropOffLoc.valid && DropOffLoc.touched?'solid 1px red':''}"
+                                        autocomplete="off"
+                                        spellcheck="off"
+                                        autocorrect="off"
+                                        autocapitalize="off"
+                                        (change)="FillLocationOnChange($event); dropOffChange = true"
+                                        #searchnew>
+
+                                        <div class="DropOffLoc-error" *ngIf="DropOffLoc.touched && DropOffLoc.errors">
+                                            <div class="error" *ngIf="DropOffLoc.errors.required">Drop Off Location is required!</div>                              
+                                        </div>
+                                        <div *ngIf ="searchnew.value != null && searchnew.value != '' && dropOffChange == true && searchnew.value.length > 10">
+                                            <div class="error" *ngIf="!searchnew.value.includes('TX')">Sorry we service only in TX</div>
+                                        </div>
+
+                                </li>
+                                <li class="form-group field dateDropDownWrapper" style="display: inline-block; float: none; margin-top: 15px;"> 
+                                    <label for="dateDropDown">Pick-up Date:</label>
+                                    <select class="select form-control" id="dateDropDown" name="NgDate" [(ngModel)]="NgDate" #dateDropDown="ngModel" style="border: 1px solid #ccc;" required>
+                                        <option *ngFor="let date of value; let i = index"
+                                            ng-selected="date.selected">{{date}}</option>
+                                    </select>
+                                    <div class="dateDropDown-error" *ngIf="dateDropDown.touched && dateDropDown.errors">
+                                        <div class="error" *ngIf="dateDropDown.errors.required">Date is required!</div>
+                                    </div>
+                                </li>
+
+                                <li class="form-group field timeDropDownWrapper" style="display: block; float: right; margin-top: 15px;"> 
+                                    <label for="timeDropDown">Pick-up Time:</label>                               
+                                    <select class="select form-control" id="timeDropDown" name="NgTime" [(ngModel)]="NgTime" #timeDropDown="ngModel" style="border: 1px solid #ccc;" required>    
+                                        <option *ngFor="let time of timeValues; let i = index"
+                                            ng-selected="time.selected">{{time}}</option>
+                                    </select>
+                                    <div class="timeDropDown-error" *ngIf="timeDropDown.touched && timeDropDown.errors">
+                                        <div class="error" *ngIf="timeDropDown.errors.required">Pick-up Time is required!</div>
+                                    </div>
+                                </li>
+
+                                <li class="form-group field phoneNumberWrapper" style="display: inline-block; float: none; margin-top: 15px;">
+                                    <label for="PhoneNumber">Phone Number:</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        [textMask]="{mask: mask}"
+                                        id="PhoneNumber"
+                                        name="NgPhoneNum" 
+                                        [(ngModel)]="NgPhoneNum" 
+                                        #PhoneNum="ngModel" 
+                                        (change)="log(PhoneNum)"                                      
+                                        required
+                                        minlength ="10"
+                                        maxlength ="15"
+                                        [ngStyle]="{border:!PhoneNum.valid && PhoneNum.touched?'solid 1px red':''}">
+
+                                        <div class="PhoneNum-error" *ngIf="PhoneNum.touched && PhoneNum.errors">
+                                            <div class="error" *ngIf="PhoneNum.errors.required">Phone number is required!</div>
+                                            <div class="error" *ngIf="PhoneNum.errors.minlength">Phone number must be at least 10 Numbers!</div>
+                                        </div>  
+                                </li>
+
+                                <li class="form-group field PassengersDropDownWrapper" style="display: block; float: right; margin-top: 15px;"> 
+                                    <label for="PassengersDropDown"># of Passengers:</label>                               
+                                    <select class="select form-control" id="PassengersDropDown" name="NgPassengers" [(ngModel)]="NgPassengers" (change)="log(Passengers)" #Passengers="ngModel" style="border: 1px solid #ccc;" required>    
+                                        <option *ngFor="let pList of PassengersList; let i = index" ng-selected="pList.selected">{{pList}}</option>
+                                    </select>
+                                    <div class="Passengers-error" *ngIf="Passengers.touched && Passengers.errors">
+                                        <div class="error" *ngIf="Passengers.errors.required">Number of Passengers is required!</div>
+                                    </div>
+                                </li>
+
+                                <li class="form-group field emailWrapper" style="display: inline-block; float: none; width: 100%; margin-top: 15px;">
+                                    <label for="email">Email address:</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="email"
+                                        name="Ngemail" 
+                                        [(ngModel)]="Ngemail" 
+                                        #email="ngModel"
+                                        placeholder="example@mail.com"
+                                        (change)="log(email); emailDupCheck(email.value)"
+                                        [value]="userEmail"
+                                        (input) = "userEmail = $event.target.value"
+                                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                        required
+                                        minlength ="3"
+                                        maxlength ="100"
+                                        [ngStyle]="{border:!email.valid && email.touched?'solid 1px red':''}">
+
+                                        <div class="email-error" *ngIf="email.touched && email.errors">
+                                            <div class="error" *ngIf="email.errors.required">email is required!</div>
+                                            <div class="error" *ngIf="email.errors.minlength">email must be at least 3 letters!</div>
+                                            <div class="error" *ngIf="email.errors.pattern">Invalid Email Format!</div>
+                                        </div>
+                                </li>
+                                <li class="form-group field reEmailWrapper" style="display: inline-block; float: none; width: 100%; margin-top: 15px;">
+                                    <label for="reEmail">Re-Enter Email address:</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="reEmail"
+                                        name="NgreEmail"
+                                        [(ngModel)]="NgreEmail" 
+                                        #reEmail="ngModel"
+                                        (change)="log(reEmail)"
+                                        [value]="userReEmail"
+                                        (input) = "userReEmail = $event.target.value"
+                                        placeholder="type email again.."
+                                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                        required
+                                        minlength ="3"
+                                        maxlength ="100"
+                                        [ngStyle]="{border:!reEmail.valid && reEmail.touched?'solid 1px red':''}">
+                                        <div class="reEmail-error" *ngIf="reEmail.touched && reEmail.errors">
+                                            <div class="error" *ngIf="reEmail.errors.required">re-enter Email is required!</div>
+                                            <div class="error" *ngIf="reEmail.errors.minlength">Email must be at least 3 letters!</div>
+                                            <div class="error" *ngIf="reEmail.errors.pattern">Invalid Email Format!</div>
+                                        </div>
+                                        <div class="mismatch-error" *ngIf="email.touched && userEmail != null && userEmail != '' && userReEmail != null && userReEmail != '' ">
+                                            <div class="error" *ngIf="userEmail != userReEmail">re-enter Email Must Match!</div>
+                                        </div>
+                                </li>
+                                
+                                <li>
+                                    <p class = "actions submitbtnform ontabpress">
+                                        <button type="submit" (click)="addNewCustomer(firstName.value, LastName.value, search.value, searchnew.value, PhoneNum.value, email.value, dateDropDown.value, timeDropDown.value, Passengers.value )" class="btn btn-primary" [disabled]="!f.valid">Book it!</button>
+                                    </p>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </fieldset>
+                </form>
+            </article>
+        </div>
+
+        <!-- <div class = "view-wrapper">
+            <img src = "/app/assets/taxiCab.jpg"> 
+             <i class="fa fa-copyright" style="display: block; float: right;" aria-hidden="true"> 2017 Alishan Ali<br>All Rights Reserved.</i>
+        </div> -->
+
+        <div class="detailBox" style="max-height: 600px;">
+            <div class="titleBox">
+                <label>Customer Reviews</label>
+            </div>
+                    <div class="commentBox">                        
+                        <p class="taskDescription">Write feedback here...</p>
+                    </div>
+                    <div class="actionBox">
+                        <ul class="commentList" *ngFor="let CusReviews of allCustomerReviews; let i = index">
+                            <li>
+                                <div class="commentText">
+                                    <p>{{CusReviews.Reviews}}</p> 
+                                    <span style="font-size:12px; color:green;">Customer: {{CusReviews.FullCusName}}</span>
+                                     <span class="date sub-text"><br>on {{CusReviews.CommentDate.replace('T00:00:00.000Z', '')}}</span>
+                                    <span *ngIf="enableDeleteComments == true"><a style="font-size: 12px; cursor:pointer;" (click)="DeleteComment(CusReviews.Reviews, i)">delete</a></span>
+                                </div>
+                            </li>
+                        </ul>
+                        <form class="form-inline" role="form">
+                            <div class="form-group">
+                                <input 
+                                class="form-control" 
+                                type="text" 
+                                name="NgCustReviews" 
+                                [(ngModel)]="NgCustReviews" 
+                                #newCustReviews="ngModel"
+                                placeholder="Your comments"
+                                (change)="log(newCustReviews)">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-default" (click)="addComment(newCustReviews.value)">Add</button>
+                            </div>
+                            <div>
+                                <span *ngIf="nonCustomer == true" style="color:red;">Please Schedule a Ride before submitting comment</span>
+                            </div>
+                        </form>
+                    </div>
+            </div>
+        
+    </section>
+    
+
+
+
+
+
+<div *ngIf="custEmail && custEmail != 0" class="modal fade show in danger" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal">x</button> -->
+                <h4 class="modal-title">Your Request is Pending!</h4>
+            </div>
+            <div class="modal-body">
+                <p>We will email you in the next 60 minutes with the decision on your request.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="ReturnTolanding()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

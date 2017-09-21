@@ -1,0 +1,36 @@
+
+.alert-success {
+    margin-top: 10px;
+}
+
+.mainTable {
+    max-width: 1000px;
+    overflow: auto;
+}
+
+
+@media (max-width: 667px ) {
+
+        .updateFees {
+         margin: 30px; 
+    }
+
+        .alert-success {
+         margin-top: 50px;
+        }
+
+        .modal-dialog {
+         width: 350px;
+        }
+
+        .noRequests {
+            font-size: 20px;
+            margin-left: 50px;
+        }
+
+        .mainTable {
+            max-width: 350px;
+            overflow: auto;
+        }
+
+}

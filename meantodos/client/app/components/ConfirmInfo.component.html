@@ -1,0 +1,71 @@
+<div *ngIf="customer.length > 0">
+
+<div *ngIf="customer.length == 0">
+            <h1>Page Not Found!</h1>
+      </div>
+
+
+<div *ngFor="let cust of customer">
+
+      <!--
+                  <ul>
+                        <li> {{cust.FirstName}} </li> 
+                        <li> {{cust.LastName}} </li>
+                        <li> {{cust.CustAddress}} </li>
+                        <li> {{cust.DropOffLoc}} </li>
+                        <li> {{cust.PhoneNum}} </li>
+                        <li> {{cust.EmailAddr}} </li>
+                  </ul>
+      -->
+<body ng-controller="MainCtrl">
+    <form (ngSubmit)="onSubmit()" #f="ngForm">
+      <div class="col-md-7">
+            <h4><span [class.hidden]="updated">First Name: {{cust.FirstName}}</span></h4>
+
+            <div *ngIf="!editing">
+            <h4><span [class.hidden]="!updated">First Name: {{FirstNameUI}}</span></h4>
+            </div>
+
+            <button [class.hidden]="!mode" (click)="updateStatus(false, true)" class="btn btn-primary">Edit</button>
+      </div>
+
+      <div class="col-md-7">
+            <input 
+            type="text"  
+            [class.hidden]="mode"
+            placeholder= {{cust.FirstName}}
+            id="FirstName"
+            name="NgFirstName" 
+            [(ngModel)]="NgFirstName" 
+            #FirstName ="ngModel"
+            [value]="custFirstName"
+            (input) = "custFirstName = $event.target.value"
+            ng-change ="InputValueChange(true)"
+            required
+            [ngStyle]="{border:!FirstName.valid && FirstName.touched?'solid 1px red':''}">
+
+            <input 
+            type="button" 
+            [class.hidden]="mode" 
+            value="Cancel" 
+            (click)="updateStatus(true)" 
+            class="btn btn-warning">
+
+            <input 
+            type="button" 
+            [class.hidden]="mode" 
+            value="Update" 
+            (click)="updateCustomer(FirstName.value, 'FirstName')" 
+            class="btn btn-warning" 
+            [disabled]="!FirstName.valid || FirstNameChangeValue == FirstName.value">
+        </div>  
+      </form>
+</body>
+</div>
+
+</div>
+
+<div *ngIf="customer.length < 0">
+      <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color:cyan; font-size:6em;"></i> <!-- This is FONT-AWESOME -->
+      <!-- <img [src]="fullPath" /> -->
+</div>
